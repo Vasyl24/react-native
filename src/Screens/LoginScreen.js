@@ -12,7 +12,7 @@ export const LoginScreen = () => {
 
   return (
     <View style={styles.container}>
-      <ImageBackground source={require('./images/mountain.jpg')} resizeMode="cover" style={styles.backgroundPhoto}></ImageBackground>
+      <ImageBackground source={require('../../images/mountain.jpg')} resizeMode="cover" style={styles.backgroundPhoto}></ImageBackground>
       <View style={styles.background}>
         <Text style={styles.text}>Увійти</Text>
         <SafeAreaView>

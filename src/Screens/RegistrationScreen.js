@@ -13,7 +13,7 @@ export const RegistrationScreen = () => {
 
   return (
     <View style={styles.container}>
-      <ImageBackground source={require('./images/mountain.jpg')} resizeMode="cover" style={styles.backgroundPhoto}></ImageBackground>
+      <ImageBackground source={require('../../images/mountain.jpg')} resizeMode="cover" style={styles.backgroundPhoto}></ImageBackground>
 
       <View style={styles.background}>
         <View style={styles.defaultPhoto}>

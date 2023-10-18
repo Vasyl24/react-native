@@ -1,7 +1,27 @@
-import { StyleSheet, Text, View, ImageBackground, SafeAreaView, TextInput, Pressable } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, SafeAreaView, TextInput, Pressable, KeyboardAvoidingView, Platform } from 'react-native';
+import { useState } from 'react';
 import { useFonts } from 'expo-font';
 
 export const LoginScreen = () => {
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [passwordVisibility, setPasswordVisibility] = useState(true);
+  const [showText, setShowText] = useState('show');
+
+  const handlePasswordVisibility = () => {
+    if (showText === 'show') {
+      setShowText('show-slash');
+      setPasswordVisibility(!passwordVisibility);
+    } else if (showText === 'show-slash') {
+      setShowText('show');
+      setPasswordVisibility(!passwordVisibility);
+    }
+  };
+
+  const signIn = () => {
+    console.log({ loginEmail, loginPassword });
+  };
+
   const [fontsLoaded] = useFonts({
     Roboto: require('../../src/assets/fonts/Roboto-Regular.ttf'),
   });
@@ -16,16 +36,29 @@ export const LoginScreen = () => {
       <View style={styles.background}>
         <Text style={styles.text}>Увійти</Text>
         <SafeAreaView>
-          <TextInput style={styles.input} placeholder="Адреса електронної пошти" />
+          <TextInput
+            style={styles.input}
+            placeholder="Адреса електронної пошти"
+            value={loginEmail}
+            onChangeText={setLoginEmail}
+            autoComplete="email"
+          />
           <View>
-            <TextInput style={[styles.input, { marginTop: 16 }]} placeholder="Пароль" />
-            <Pressable style={styles.showBtn}>
+            <TextInput
+              style={[styles.input, { marginTop: 16 }]}
+              placeholder="Пароль"
+              value={loginPassword}
+              onChangeText={(text) => setLoginPassword(text)}
+              autoComplete="password"
+              secureTextEntry={passwordVisibility}
+            />
+            <Pressable style={styles.showBtn} onPress={handlePasswordVisibility}>
               <Text>Показати</Text>
             </Pressable>
           </View>
         </SafeAreaView>
 
-        <Pressable style={styles.enterBtn}>
+        <Pressable style={styles.enterBtn} onPress={signIn}>
           <Text style={styles.enterBtnText}>Увійти</Text>
         </Pressable>
 
@@ -50,7 +83,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    height: 490,
+    height: '60%',
     alignSelf: 'center',
     backgroundColor: '#ffffff',
     borderTopRightRadius: 25,
@@ -64,7 +97,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontStyle: 'normal',
     fontWeight: 500,
-    lineHeight: 'normal',
+    // lineHeight: 'normal',
     letterSpacing: 0.3,
   },
   input: {
@@ -83,7 +116,7 @@ const styles = StyleSheet.create({
   showBtn: {
     position: 'absolute',
     alignSelf: 'center',
-    right: 32,
+    right: 46,
     bottom: 16,
   },
   enterBtn: {

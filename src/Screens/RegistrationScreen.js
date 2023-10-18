@@ -1,8 +1,29 @@
-import { StyleSheet, Text, View, ImageBackground, SafeAreaView, TextInput, Pressable } from 'react-native';
+import { ImageBackground, Pressable, SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useState } from 'react';
 import { useFonts } from 'expo-font';
 import Svg, { Path } from 'react-native-svg';
 
 export const RegistrationScreen = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [login, setLogin] = useState('');
+  const [passwordVisibility, setPasswordVisibility] = useState(true);
+  const [showText, setShowText] = useState('show');
+
+  const handlePasswordVisibility = () => {
+    if (showText === 'show') {
+      setShowText('show-slash');
+      setPasswordVisibility(!passwordVisibility);
+    } else if (showText === 'show-slash') {
+      setShowText('show');
+      setPasswordVisibility(!passwordVisibility);
+    }
+  };
+
+  const signIn = () => {
+    console.log({ login, email, password });
+  };
+
   const [fontsLoaded] = useFonts({
     Roboto: require('../../src/assets/fonts/Roboto-Regular.ttf'),
   });
@@ -14,7 +35,6 @@ export const RegistrationScreen = () => {
   return (
     <View style={styles.container}>
       <ImageBackground source={require('../../images/mountain.jpg')} resizeMode="cover" style={styles.backgroundPhoto}></ImageBackground>
-
       <View style={styles.background}>
         <View style={styles.defaultPhoto}>
           <Svg width={25} height={25} viewBox="0 0 32 32" style={styles.iconPlus}>
@@ -38,17 +58,31 @@ export const RegistrationScreen = () => {
         <Text style={styles.text}>Реєстрація</Text>
 
         <SafeAreaView>
-          <TextInput style={styles.input} placeholder="Логін" />
-          <TextInput style={[styles.input, styles.inputMail]} placeholder="Адреса електронної пошти" />
+          <TextInput style={styles.input} placeholder="Логін" value={login} onChangeText={setLogin} />
+
+          <TextInput
+            style={[styles.input, styles.inputMail]}
+            placeholder="Адреса електронної пошти"
+            value={email}
+            onChangeText={setEmail}
+            autoComplete="email"
+          />
           <View>
-            <TextInput style={[styles.input, styles.password]} placeholder="Пароль" />
-            <Pressable style={styles.showBtn}>
+            <TextInput
+              style={[styles.input, styles.password]}
+              placeholder="Пароль"
+              value={password}
+              onChangeText={(text) => setPassword(text)}
+              autoComplete="password"
+              secureTextEntry={passwordVisibility}
+            />
+            <Pressable style={styles.showBtn} onPress={handlePasswordVisibility}>
               <Text>Показати</Text>
             </Pressable>
           </View>
         </SafeAreaView>
 
-        <Pressable style={styles.registerBtn}>
+        <Pressable style={styles.registerBtn} onPress={signIn}>
           <Text style={styles.registerBtnText}>Зареєструватися</Text>
         </Pressable>
 
@@ -61,6 +95,9 @@ export const RegistrationScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
   },
   backgroundPhoto: {
     flex: 1,
@@ -74,7 +111,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     position: 'absolute',
     left: '50%',
-    transform: [{ translateX: -50 }, { translateY: -50 }],
+    transform: [{ translateX: -60 }, { translateY: -50 }],
     zIndex: 2,
     margin: 'auto',
   },
@@ -87,7 +124,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    height: 580,
+    height: '70%',
     alignSelf: 'center',
     backgroundColor: '#ffffff',
     borderTopRightRadius: 25,
@@ -126,7 +163,7 @@ const styles = StyleSheet.create({
   showBtn: {
     position: 'absolute',
     alignSelf: 'center',
-    right: 32,
+    right: 46,
     bottom: 16,
   },
   registerBtn: {
